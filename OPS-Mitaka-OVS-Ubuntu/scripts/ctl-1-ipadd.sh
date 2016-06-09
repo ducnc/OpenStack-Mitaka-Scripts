@@ -14,19 +14,20 @@ cat << EOF >> $ifaces
 auto lo
 iface lo inet loopback
 
-# MGNT NETWORK
-auto eth0
-iface eth0 inet static
-address $CTL_MGNT_IP
-netmask $NETMASK_ADD_MGNT
 
 # EXT NETWORK
-auto eth1
-iface eth1 inet static
+auto eth0
+iface eth0 inet static
 address $CTL_EXT_IP
 netmask $NETMASK_ADD_EXT
 gateway $GATEWAY_IP_EXT
 dns-nameservers 8.8.8.8
+
+auto eth1
+iface eth1 inet static
+address $CTL_DATA_IP
+netmask $NETMASK_ADD_EXT
+
 EOF
 
 echocolor "Configuring hostname in CONTROLLER node"

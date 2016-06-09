@@ -141,7 +141,7 @@ ops_edit $ovsfile agent tunnel_types gre
 ops_edit $ovsfile agent l2_population True
 
 # [ovs] section
-ops_edit $ovsfile ovs local_ip $CTL_MGNT_IP
+ops_edit $ovsfile ovs local_ip $CTL_DATA_IP
 ops_edit $ovsfile ovs bridge_mappings external:br-ex
 
 
@@ -175,10 +175,6 @@ ops_edit $netdhcp DEFAULT dhcp_driver neutron.agent.linux.dhcp.Dnsmasq
 ops_edit $netdhcp DEFAULT enable_isolated_metadata True
 ops_edit $netdhcp DEFAULT dnsmasq_config_file /etc/neutron/dnsmasq-neutron.conf
 
-echocolor "Config MTU"
-sleep 3
-echo "dhcp-option-force=26,1454" > /etc/neutron/dnsmasq-neutron.conf
-# killall dnsmasq
 
 echocolor "Configuring METADATA AGENT"
 sleep 7
@@ -233,24 +229,24 @@ netmask $NETMASK_ADD_EXT
 gateway $GATEWAY_IP_EXT
 dns-nameservers 8.8.8.8
 
-auto eth1
-iface eth1 inet manual
+auto eth0
+iface eth0 inet manual
    up ifconfig \$IFACE 0.0.0.0 up
    up ip link set \$IFACE promisc on
    down ip link set \$IFACE promisc off
    down ifconfig \$IFACE down
 
-auto eth0
-iface eth0 inet static
-address $CTL_MGNT_IP
-netmask $NETMASK_ADD_MGNT
+auto eth1
+iface eth1 inet static
+address $CTL_DATA_IP
+netmask $NETMASK_ADD_EXT
+
 EOF
 
 echocolor "Config br-int and br-ex for OpenvSwitch"
 sleep 5
-# ovs-vsctl add-br br-int
 ovs-vsctl add-br br-ex
-ovs-vsctl add-port br-ex eth1
+ovs-vsctl add-port br-ex eth0
 
 echocolor "Finished install NEUTRON on CONTROLLER"
 
