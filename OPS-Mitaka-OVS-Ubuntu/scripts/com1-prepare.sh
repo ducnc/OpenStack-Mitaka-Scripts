@@ -182,9 +182,16 @@ ops_edit $ovsfile securitygroup firewall_driver \
 
 ## [ovs] section
 ops_edit $ovsfile ovs local_ip $COM1_DATA_IP
+ops_edit $ovsfile ovs bridge_mappings external:br-ex
+
+ovs-vsctl add-br br-ex
+ovs-vsctl add-port br-ex eth0
 
 echocolor "Reset service nova-compute,openvswitch_agent"
 sleep 5
 service nova-compute restart
 service neutron-openvswitch-agent restart
+
+echocolor "Rebooting Server"
+reboot
 

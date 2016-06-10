@@ -43,12 +43,19 @@ iface lo inet loopback
 
 
 # EXT NETWORK
-auto eth0
-iface eth0 inet static
+auto br-ex
+iface br-ex inet static
 address $COM1_EXT_IP
 netmask $NETMASK_ADD_EXT
 gateway $GATEWAY_IP_EXT
 dns-nameservers 8.8.8.8
+
+auto eth0
+iface eth0 inet manual
+   up ifconfig $IFACE 0.0.0.0 up
+   up ip link set $IFACE promisc on
+   down ip link set $IFACE promisc off
+   down ifconfig $IFACE down
 
 auto eth1
 iface eth1 inet static

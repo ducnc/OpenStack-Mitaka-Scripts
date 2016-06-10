@@ -68,7 +68,7 @@ ops_edit $neutron_ctl DEFAULT auth_strategy keystone
 ops_edit $neutron_ctl DEFAULT rpc_backend rabbit
 ops_edit $neutron_ctl DEFAULT notify_nova_on_port_status_changes True
 ops_edit $neutron_ctl DEFAULT notify_nova_on_port_data_changes True
-
+ops_edit $neutron_ctl DEFAULT advertise_mtu true
 
 ## [database] section
 ops_edit $neutron_ctl database \
@@ -114,13 +114,13 @@ ops_edit $ml2_clt ml2 type_drivers flat,vlan,vxlan,gre
 ops_edit $ml2_clt ml2 tenant_network_types vlan,gre,vxlan
 ops_edit $ml2_clt ml2 mechanism_drivers openvswitch,l2population
 ops_edit $ml2_clt ml2 extension_drivers port_security
-
+ops_edit $ml2_clt ml2 path_mtu 1500
 
 ## [ml2_type_flat] section
 ops_edit $ml2_clt ml2_type_flat flat_networks external
 
 ## [ml2_type_gre] section
-ops_edit $ml2_clt ml2_type_gre tunnel_id_ranges 300:400
+ops_edit $ml2_clt ml2_type_gre tunnel_id_ranges 100:400
 
 ## [ml2_type_vxlan] section
 # ops_edit $ml2_clt ml2_type_vxlan vni_ranges 201:300
@@ -160,7 +160,7 @@ test -f $netl3agent.orig || cp $netl3agent $netl3agent.orig
 ## [DEFAULT] section
 ops_edit $netl3agent DEFAULT interface_driver \
     neutron.agent.linux.interface.OVSInterfaceDriver
-ops_edit $netl3agent DEFAULT external_network_bridge
+ops_edit $netl3agent DEFAULT external_network_bridge br-ex
 
 echocolor "Configuring DHCP AGENT"
 sleep 7
@@ -173,7 +173,6 @@ ops_edit $netdhcp DEFAULT interface_driver \
     neutron.agent.linux.interface.OVSInterfaceDriver
 ops_edit $netdhcp DEFAULT dhcp_driver neutron.agent.linux.dhcp.Dnsmasq
 ops_edit $netdhcp DEFAULT enable_isolated_metadata True
-ops_edit $netdhcp DEFAULT dnsmasq_config_file /etc/neutron/dnsmasq-neutron.conf
 
 
 echocolor "Configuring METADATA AGENT"
