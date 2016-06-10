@@ -52,7 +52,6 @@ ops_del $nova_ctl DEFAULT logdir
 ops_del $nova_ctl DEFAULT verbose
 
 ops_edit $nova_ctl DEFAULT log-dir /var/log/nova
-ops_edit $nova_ctl DEFAULT enabled_apis osapi_compute,metadata
 
 ops_edit $nova_ctl DEFAULT rpc_backend rabbit
 ops_edit $nova_ctl DEFAULT auth_strategy keystone
