@@ -11,6 +11,8 @@ add-apt-repository cloud-archive:mitaka -y
 sleep 5
 echocolor "Upgrade the packages for server"
 apt-get -y update && apt-get -y upgrade && apt-get -y dist-upgrade
+apt-get -y install  neutron-plugin-openvswitch-agent
+
 
 echocolor "Configuring hostname for COMPUTE1 node"
 sleep 3
@@ -64,6 +66,9 @@ address $COM2_DATA_IP
 netmask $NETMASK_ADD_EXT
 
 EOF
+
+ovs-vsctl add-br br-ex
+ovs-vsctl add-port br-ex eth0
 
 sleep 5
 echocolor "Rebooting machine ..."

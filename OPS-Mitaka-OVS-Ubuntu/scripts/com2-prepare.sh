@@ -132,8 +132,6 @@ rm /var/lib/nova/nova.sqlite
 echocolor "Install openvswitch-agent (neutron) on COMPUTE NODE"
 sleep 5
 
-apt-get -y install  neutron-plugin-openvswitch-agent 
-
 
 echocolor "Config file neutron.conf"
 neutron_com=/etc/neutron/neutron.conf
@@ -184,8 +182,6 @@ ops_edit $ovsfile securitygroup firewall_driver \
 ops_edit $ovsfile ovs local_ip $COM2_DATA_IP
 ops_edit $ovsfile ovs bridge_mappings external:br-ex
 
-ovs-vsctl add-br br-ex
-ovs-vsctl add-port br-ex eth0
 
 echocolor "Reset service nova-compute,openvswitch_agent"
 sleep 5
